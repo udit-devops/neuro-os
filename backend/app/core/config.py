@@ -6,5 +6,6 @@ class Settings:
     def __init__(self):
         self.APP_NAME = os.getenv("APP_NAME")
         self.DEBUG = os.getenv("DEBUG") == "True"
+        self.DATABASE_URL = os.getenv("DATABASE_URL")
 
 settings = Settings()
