@@ -15,3 +15,10 @@ class UserService:
         db.commit()
         db.refresh(db_user)
         return db_user
+    
+    def get_user(self, db:Session):
+       return db.query(User).all()
+    def get_user_by_id(self , db:Session, user_id:int):
+       
+       user = db.query(User).filter(User.id==user_id).first()
+       return user
