@@ -8,3 +8,5 @@ class User(Base):
     email = Column(String(100), unique=True, index=True)
     full_name = Column(String(100))
     is_active = Column(Boolean, default=True)
+
+
