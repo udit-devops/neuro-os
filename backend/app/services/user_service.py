@@ -22,3 +22,5 @@ class UserService:
        
        user = db.query(User).filter(User.id==user_id).first()
        return user
+    
+    
