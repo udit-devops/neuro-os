@@ -3,7 +3,7 @@ from fastapi import HTTPException,status
 from sqlalchemy.orm import Session
 from app.models.users import User
 from app.schemas.user import UserCreate
-
+from app.schemas.user import UserUpdate
 class UserService:
     def create_user(self, db: Session, user:UserCreate):
         existing_user = db.query(User).filter(User.email==user.email).first()
@@ -23,4 +23,28 @@ class UserService:
        user = db.query(User).filter(User.id==user_id).first()
        return user
     
+    def update_user(self, db:Session, user_id:int, user:UserUpdate):
+       db_user = db.query(User).filter(User.id==user_id).first()
+       if not db_user:
+          raise HTTPException(
+             status_code=status.HTTP_404_NOT_FOUND,
+             detail="user not found"
+
+          )
+       
+       db_user.full_name = user.full_name
+       db.commit()
+       db.refresh(db_user)
+       return db_user
     
+    def delete_user(self, db:Session, user_id:int):
+       db_user = db.query(User).filter(User.id==user_id).first()
+       if not db_user:
+          raise HTTPException(
+             status_code=status.HTTP_404_NOT_FOUND,
+             detail="user not found"
+          )
+       db.delete(db_user)
+       db.commit()
+
+       return {"message": "user deleted successfully"}
