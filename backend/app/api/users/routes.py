@@ -46,4 +46,3 @@ def delete_user(
     db:Session = Depends(get_db)
 ):
     return user_service.delete_user(db,user_id)
-# starting with other backend stuffs
