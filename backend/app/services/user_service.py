@@ -2,9 +2,9 @@ from fastapi import HTTPException,status
 
 from sqlalchemy.orm import Session
 from app.models.users import User
-from app.schemas.user import UserCreate
+from app.schemas.user import UserCreate, UserLogin
 from app.schemas.user import UserUpdate
-from app.core.security import hash_password
+from app.core.security import hash_password, verify_password
 class UserService:
     def create_user(self, db: Session, user:UserCreate):
         existing_user = db.query(User).filter(User.email==user.email).first()
@@ -49,3 +49,18 @@ class UserService:
        db.commit()
 
        return {"message": "user deleted successfully"}
+    
+    def user_login(self,db:Session,user:UserLogin):
+       db_user = db.query(User).filter(User.email==user.email).first()
+       if not db_user:
+          raise HTTPException(
+             status_code=status.HTTP_401_UNAUTHORIZED,
+             detail="Invalid email or password"
+          )
+       if not verify_password(user.password,db_user.hashed_password):
+            raise HTTPException(
+               status_code=status.HTTP_401_UNAUTHORIZED,
+               detail="Invalid email or password"
+            )
+       return db_user
+      
