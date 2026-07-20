@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.models.users import User
 from app.schemas.user import UserCreate, UserLogin
 from app.schemas.user import UserUpdate
-from app.core.security import hash_password, verify_password
+from app.core.security import create_access_token, hash_password, verify_password
 class UserService:
     def create_user(self, db: Session, user:UserCreate):
         existing_user = db.query(User).filter(User.email==user.email).first()
@@ -62,5 +62,13 @@ class UserService:
                status_code=status.HTTP_401_UNAUTHORIZED,
                detail="Invalid email or password"
             )
-       return db_user
+       payload = {
+          "sub": str(db_user.id)
+       }
+
+       acess_token = create_access_token(payload)
+       return {
+          "access_token": acess_token,
+          "token_type": "bearer"
+       }
       
