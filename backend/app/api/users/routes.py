@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.services.user_service import UserService
-from app.schemas.user import UserCreate, UserUpdate
-from app.schemas.user import UserResponse
+from app.schemas.user import UserCreate, UserUpdate, UserLogin
+
+from app.schemas.user import UserResponse , Token
 router = APIRouter(
     prefix="/users",
     tags=["Users"]
@@ -46,3 +47,10 @@ def delete_user(
     db:Session = Depends(get_db)
 ):
     return user_service.delete_user(db,user_id)
+
+@router.post("/login",response_model=Token)
+def user_login(
+  user: UserLogin,
+  db:Session = Depends(get_db)
+):
+    return user_service.user_login(db,user)

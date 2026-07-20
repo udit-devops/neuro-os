@@ -66,9 +66,9 @@ class UserService:
           "sub": str(db_user.id)
        }
 
-       acess_token = create_access_token(payload)
+       access_token = create_access_token(payload)
        return {
-          "access_token": acess_token,
+          "access_token": access_token,
           "token_type": "bearer"
        }
       
