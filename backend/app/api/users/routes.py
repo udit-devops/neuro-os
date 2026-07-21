@@ -54,3 +54,5 @@ def user_login(
   db:Session = Depends(get_db)
 ):
     return user_service.user_login(db,user)
+
+    #routes
