@@ -5,6 +5,7 @@ from app.models.users import User
 from app.schemas.user import UserCreate, UserLogin
 from app.schemas.user import UserUpdate
 from app.core.security import create_access_token, hash_password, verify_password
+from fastapi.security import OAuth2PasswordRequestForm
 class UserService:
     def create_user(self, db: Session, user:UserCreate):
         existing_user = db.query(User).filter(User.email==user.email).first()
@@ -50,14 +51,14 @@ class UserService:
 
        return {"message": "user deleted successfully"}
     
-    def user_login(self,db:Session,user:UserLogin):
-       db_user = db.query(User).filter(User.email==user.email).first()
+    def user_login(self,db:Session, form_data: OAuth2PasswordRequestForm):
+       db_user = db.query(User).filter(User.email==form_data.username).first()
        if not db_user:
           raise HTTPException(
              status_code=status.HTTP_401_UNAUTHORIZED,
              detail="Invalid email or password"
           )
-       if not verify_password(user.password,db_user.hashed_password):
+       if not verify_password(form_data.password,db_user.hashed_password):
             raise HTTPException(
                status_code=status.HTTP_401_UNAUTHORIZED,
                detail="Invalid email or password"

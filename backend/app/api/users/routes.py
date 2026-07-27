@@ -6,6 +6,7 @@ from app.schemas.user import UserCreate, UserUpdate, UserLogin
 from app.core.security import get_current_user
 from app.models.users import User
 from app.schemas.user import UserResponse , Token
+from fastapi.security import OAuth2PasswordRequestForm
 router = APIRouter(
     prefix="/users",
     tags=["Users"]
@@ -27,6 +28,11 @@ def get_user(
 ):
     return user_service.get_user(db)
 
+@router.get("/me",response_model=UserResponse)
+def get_current_user_info(
+    current_user:User = Depends(get_current_user)
+):
+    return current_user
 @router.get("/{user_id}",response_model=UserResponse)
 def get_user_by_id(
     user_id:int,
@@ -42,6 +48,8 @@ def update_user(
 ):
     
     return user_service.update_user(db,user_id,user)
+
+
 @router.delete("/{user_id}",response_model=dict)
 def delete_user(
     user_id:int,
@@ -51,13 +59,8 @@ def delete_user(
 
 @router.post("/login",response_model=Token)
 def user_login(
-  user: UserLogin,
+  form_data: OAuth2PasswordRequestForm = Depends(),
   db:Session = Depends(get_db)
 ):
-    return user_service.user_login(db,user)
+    return user_service.user_login(db,form_data)
 
-@router.get("/me",response_model=UserResponse)
-def get_current_user_info(
-    current_user:User = Depends(get_current_user)
-):
-    return current_user
