@@ -11,6 +11,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     phone_number = Column(String(20),nullable=True)
     hashed_password = Column(String(266))
-    
 
+   
+    
 
