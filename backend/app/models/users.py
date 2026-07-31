@@ -1,6 +1,6 @@
 from app.db.database import Base
 from sqlalchemy import Column, Integer, String , Boolean
-
+from sqlalchemy.orm import relationship
 
 class User(Base):
     __tablename__= "users"
@@ -12,6 +12,6 @@ class User(Base):
     phone_number = Column(String(20),nullable=True)
     hashed_password = Column(String(266))
 
-   
+    workspaces = relationship("Workspace", back_populates="owner")
     
 
