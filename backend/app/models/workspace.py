@@ -1,5 +1,5 @@
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
-from app.db.base import Base
+from app.db.database import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 class Workspace(Base):
