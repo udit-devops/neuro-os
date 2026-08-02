@@ -12,6 +12,6 @@ class User(Base):
     phone_number = Column(String(20),nullable=True)
     hashed_password = Column(String(266))
 
-    workspaces = relationship("Workspace", back_populates="owner")
+    workspaces = relationship("Workspace", back_populates="owner", cascade="all, delete-orphan", passive_deletes=True)
     
 

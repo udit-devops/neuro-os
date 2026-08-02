@@ -1,13 +1,30 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 from datetime import datetime as DateTime
 
 class WorkspaceCreate(BaseModel):
-    name: str
-    description: str | None = None
+    name: str = Field(max_length=100)
+    description: str | None = Field(default=None, max_length=5000)
+
+    @field_validator("name")
+    @classmethod
+    def strip_name(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("name cannot be empty")
+        return value
 
 class WorkspaceUpdate(BaseModel):
-    name: str | None = None
-    description: str | None = None
+    name: str | None = Field(default=None, max_length=100)
+    description: str | None = Field(default=None, max_length=5000)
+
+    @field_validator("name")
+    @classmethod
+    def strip_name(cls, value: str | None) -> str | None:
+        if value is not None:
+            value = value.strip()
+            if not value:
+                raise ValueError("name cannot be empty")
+        return value
 
 class WorkspaceResponse(BaseModel):
     model_config ={
@@ -19,4 +36,3 @@ class WorkspaceResponse(BaseModel):
     updated_at:DateTime
     created_at:DateTime
     owner_id:int
-

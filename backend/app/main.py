@@ -4,6 +4,7 @@ from app.core.config import settings
 from contextlib import asynccontextmanager
 from app.db.init_db import init_db
 from app.api.users.routes import router as users_router
+from app.api.workspaces.routes import router as workspaces_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
@@ -16,6 +17,7 @@ app = FastAPI(
 )
 app.include_router(health_router)
 app.include_router(users_router)
+app.include_router(workspaces_router)
 
 @app.get("/")
 def root():
