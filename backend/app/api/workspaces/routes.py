@@ -55,4 +55,3 @@ def delete_workspace(
     current_user: User = Depends(get_current_user),
 ):
     return workspace_service.delete_workspace(db, current_user.id, workspace_id)
-#phase 2
