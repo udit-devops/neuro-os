@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.services.user_service import UserService
@@ -6,6 +6,7 @@ from app.schemas.user import UserCreate, UserUpdate, UserLogin
 from app.core.security import get_current_user
 from app.models.users import User
 from app.schemas.user import UserResponse , Token
+from app.core.rate_limit import limiter
 from fastapi.security import OAuth2PasswordRequestForm
 router = APIRouter(
     prefix="/users",
@@ -15,7 +16,9 @@ router = APIRouter(
 user_service = UserService()
 
 @router.post("/",response_model=UserResponse)
+@limiter.limit("3/minute")
 def create_user(
+    request: Request,
     user: UserCreate,
     db: Session = Depends(get_db)
 ):
@@ -58,7 +61,9 @@ def delete_user(
     return user_service.delete_user(db,user_id)
 
 @router.post("/login",response_model=Token)
+@limiter.limit("10/minute")
 def user_login(
+  request: Request,
   form_data: OAuth2PasswordRequestForm = Depends(),
   db:Session = Depends(get_db)
 ):

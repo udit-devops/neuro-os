@@ -1,0 +1,12 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: neuroos-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - neuroos_redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  neuroos_redis_data:

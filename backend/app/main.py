@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from slowapi import _rate_limit_exceeded_handler
 from app.api.health.routes import router as health_router
 from app.core.config import settings
 from contextlib import asynccontextmanager
@@ -6,6 +7,9 @@ from app.db.init_db import init_db
 from app.api.users.routes import router as users_router
 from app.api.workspaces.routes import router as workspaces_router
 from app.api.documents.routes import router as documents_router
+from app.core.rate_limit import limiter
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
@@ -16,6 +20,10 @@ app = FastAPI(
     debug=settings.DEBUG,
     lifespan=lifespan
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(429, _rate_limit_exceeded_handler)
+
 app.include_router(health_router)
 app.include_router(users_router)
 app.include_router(workspaces_router)
@@ -24,5 +32,3 @@ app.include_router(documents_router)
 @app.get("/")
 def root():
     return {"message": "welcome boiss"}
-
-    
