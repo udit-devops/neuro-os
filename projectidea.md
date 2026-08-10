@@ -294,7 +294,7 @@ Do not introduce duplicate infrastructure without a clear reason.
 
 ---
 
-# 10. Phase 4 — Current Phase
+# 10. Phase 4 — Ingestion + RAG Foundation (Completed)
 
 Phase 4 is the beginning of the actual AI pipeline.
 
@@ -803,9 +803,9 @@ Do not redesign the entire project without a strong reason.
 
 The immediate goal is:
 
-COMPLETE PHASE 4.
+PHASE 4 IS COMPLETE.
 
-Phase 4 must end with:
+Phase 4 was completed with:
 
 - reliable document upload
 - secure file handling
@@ -813,12 +813,14 @@ Phase 4 must end with:
 - text extraction
 - text cleaning
 - chunking
-- embeddings
+- embeddings (Gemini, gemini-embedding-001, 768 dims)
 - vector storage
 - semantic retrieval
 - basic grounded RAG
-- appropriate tests
+- appropriate tests (69 passing)
 - production-quality architecture
+
+Next: Phase 5 — Frontend.
 
 Do NOT build the frontend during Phase 4.
 
@@ -840,7 +842,7 @@ Phase 3 — Documents
 STATUS: COMPLETE
 
 Phase 4 — Ingestion + RAG Foundation
-STATUS: CURRENT
+STATUS: COMPLETE
 
 Phase 5 — Frontend
 STATUS: FUTURE
