@@ -7,6 +7,8 @@ import Dashboard from '../pages/Dashboard'
 import Workspaces from '../pages/Workspaces'
 import WorkspaceDetail from '../pages/WorkspaceDetail'
 import Chat from '../pages/Chat'
+import Documents from '../pages/Documents'
+import Settings from '../pages/Settings'
 import {useAuth} from '../auth/AuthProvider'
 
 function Protected({children}:{children:JSX.Element}){
@@ -25,7 +27,9 @@ export default function AppRoutes(){
           <Route index element={<Protected><Dashboard/></Protected>} />
           <Route path="workspaces" element={<Protected><Workspaces/></Protected>} />
           <Route path="workspaces/:workspaceId" element={<Protected><WorkspaceDetail/></Protected>} />
+          <Route path="documents" element={<Protected><Documents/></Protected>} />
           <Route path="chat" element={<Protected><Chat/></Protected>} />
+          <Route path="settings" element={<Protected><Settings/></Protected>} />
         </Route>
       </Routes>
     </BrowserRouter>

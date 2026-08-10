@@ -19,16 +19,19 @@ export default function Signup(){
   }
 
   return (
-    <div style={{maxWidth:480,margin:40}}>
-      <h2>Create account</h2>
-      <form onSubmit={submit}>
-        <label>Full name</label>
-        <input value={name} onChange={e=>setName(e.target.value)} />
-        <label>Email</label>
-        <input value={email} onChange={e=>setEmail(e.target.value)} />
-        <label>Password</label>
-        <input type="password" value={password} onChange={e=>setPassword(e.target.value)} />
-        <button type="submit">Create</button>
+    <div style={{maxWidth:560,margin:40}}>
+      <h2 className="h1">Create account</h2>
+      <form onSubmit={submit} style={{marginTop:16,display:'grid',gap:12}}>
+        <label className="muted">Full name</label>
+        <input className="ui-input" value={name} onChange={e=>setName(e.target.value)} />
+        <label className="muted">Email</label>
+        <input className="ui-input" value={email} onChange={e=>setEmail(e.target.value)} />
+        <label className="muted">Password</label>
+        <input className="ui-input" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
+        <div style={{display:'flex',gap:12}}>
+          <button className="btn btn-primary" type="submit">Create</button>
+          <a href="/login" style={{color:'var(--muted)',textDecoration:'none',alignSelf:'center'}}>Sign in</a>
+        </div>
       </form>
     </div>
   )

@@ -56,6 +56,22 @@ textarea{width:100%;min-height:120px;padding:12px;border-radius:8px;border:1px s
   flex:1 1 auto;
   background:var(--bg);
 }
+.display{font-size:var(--font-display);line-height:0.9;margin:0 0 16px 0}
+.h1{font-size:var(--font-h1);font-weight:700}
+.h2{font-size:var(--font-h2);font-weight:600}
+.h3{font-size:var(--font-h3);font-weight:600}
+.muted{color:var(--muted)}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* Button refinements */
+.btn{cursor:pointer}
+
+/* Responsive adjustments */
+@media (max-width:900px){
+  .sidebar{display:none}
+  .topbar{padding:0 16px}
+  .display{font-size:40px}
+}
 .display{
   font-size:var(--font-display);
   line-height:0.9;
