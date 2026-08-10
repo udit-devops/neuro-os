@@ -30,6 +30,32 @@ class DocumentService:
         db.refresh(document)
         return document
 
+    def upload_document(
+        self,
+        db: Session,
+        owner_id: int,
+        workspace_id: int,
+        *,
+        title: str,
+        original_filename: str,
+        storage_key: str,
+        file_size: int,
+        file_type: str,
+    ) -> Document:
+        workspace = self._get_owned_workspace(db, owner_id, workspace_id)
+        document = Document(
+            title=title,
+            original_filename=original_filename,
+            file_path=storage_key,
+            file_size=file_size,
+            file_type=file_type,
+            workspace_id=workspace.id,
+        )
+        db.add(document)
+        db.commit()
+        db.refresh(document)
+        return document
+
     def get_documents(self, db: Session, owner_id: int, workspace_id: int, skip: int = 0, limit: int = 100) -> list[Document]:
         workspace = self._get_owned_workspace(db, owner_id, workspace_id)
         return (

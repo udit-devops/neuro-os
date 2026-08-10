@@ -1,6 +1,8 @@
 from pydantic import BaseModel, Field, field_validator
 from datetime import datetime as DateTime
 
+from app.models.document import ProcessingStatus
+
 
 class DocumentCreate(BaseModel):
     title: str = Field(max_length=255)
@@ -45,5 +47,10 @@ class DocumentResponse(BaseModel):
     file_size: int
     file_type: str | None = None
     workspace_id: int
+    processing_status: ProcessingStatus
+    error_message: str | None = None
+    processing_started_at: DateTime | None = None
+    processing_completed_at: DateTime | None = None
+    chunk_count: int
     created_at: DateTime
     updated_at: DateTime

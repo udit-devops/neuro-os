@@ -1,4 +1,17 @@
 services:
+  postgres:
+    image: pgvector/pgvector:pg18
+    container_name: neuroos-postgres
+    environment:
+      POSTGRES_USER: neuroos
+      POSTGRES_PASSWORD: neuroos
+      POSTGRES_DB: neuroos
+    ports:
+      - "5433:5432"
+    volumes:
+      - neuroos_postgres_data:/var/lib/postgresql
+    restart: unless-stopped
+
   redis:
     image: redis:7-alpine
     container_name: neuroos-redis
@@ -9,4 +22,5 @@ services:
     restart: unless-stopped
 
 volumes:
+  neuroos_postgres_data:
   neuroos_redis_data:

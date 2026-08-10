@@ -1,7 +1,16 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Index, Integer, String
+from enum import Enum
+
+from sqlalchemy import Column, DateTime, ForeignKey, Index, Integer, String, Text
 from app.db.database import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+
+
+class ProcessingStatus(str, Enum):
+    UPLOADED = "UPLOADED"
+    PROCESSING = "PROCESSING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
 
 
 class Document(Base):
@@ -22,7 +31,14 @@ class Document(Base):
     file_size = Column(Integer, nullable=False, default=0)
     file_type = Column(String(100), nullable=True)
     workspace_id = Column(Integer, ForeignKey("workspace.id", ondelete="CASCADE"), nullable=False)
+    processing_status = Column(String(20), nullable=False, default=ProcessingStatus.UPLOADED.value, index=True)
+    error_message = Column(Text, nullable=True)
+    processing_started_at = Column(DateTime(timezone=True), nullable=True)
+    processing_completed_at = Column(DateTime(timezone=True), nullable=True)
+    chunk_count = Column(Integer, nullable=False, default=0)
+    processing_attempts = Column(Integer, nullable=False, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     workspace = relationship("Workspace", back_populates="documents")
+    chunks = relationship("Chunk", back_populates="document", cascade="all, delete-orphan", passive_deletes=True)

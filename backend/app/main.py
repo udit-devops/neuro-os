@@ -8,10 +8,12 @@ from app.api.users.routes import router as users_router
 from app.api.workspaces.routes import router as workspaces_router
 from app.api.documents.routes import router as documents_router
 from app.core.rate_limit import limiter
+from app.core.logging import setup_logging
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    setup_logging()
     init_db()
     yield
 
