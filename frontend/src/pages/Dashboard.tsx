@@ -57,7 +57,7 @@ export default function Dashboard() {
         </h1>
         <p className="lead" style={{ marginTop: 16 }}>
           Upload documents into workspaces, let NeuroOS index them, then ask questions
-          about everything you know — answered with sources.
+          about everything you know answered with sources.
         </p>
 
         <div className="grid-stats">
