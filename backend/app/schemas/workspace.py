@@ -36,5 +36,6 @@ class WorkspaceResponse(BaseModel):
     updated_at:DateTime
     created_at:DateTime
     owner_id:int
+    document_count:int = 0
 
 ## workspace backend done

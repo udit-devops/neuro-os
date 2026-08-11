@@ -6,8 +6,9 @@ from app.db.session import get_db
 from app.models.users import User
 from app.rag.errors import RetryableError
 from app.rag.rag_service import RAGService, RAGUnavailableError
+from app.rag.retrieval import RetrievalService
 from app.schemas.document import DocumentUpdate, DocumentResponse
-from app.schemas.rag import RAGQueryRequest, RAGQueryResponse
+from app.schemas.rag import RAGQueryRequest, RAGQueryResponse, SearchResult
 from app.services.document_service import DocumentService
 from app.services.file_validation import FileValidator
 from app.services.ingestion_queue import enqueue_document
@@ -87,6 +88,27 @@ def query_workspace(
     except (RAGUnavailableError, RetryableError) as exc:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc))
     return answer.to_dict()
+
+
+@router.post("/{workspace_id}/search", response_model=list[SearchResult])
+def search_workspace(
+    workspace_id: int,
+    data: RAGQueryRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    _require_owned_workspace(current_user.id, workspace_id, db)
+    chunks = RetrievalService().retrieve(db, workspace_id, data.question, top_k=data.top_k)
+    return [
+        SearchResult(
+            document_id=chunk.document_id,
+            title=chunk.title,
+            chunk_index=chunk.chunk_index,
+            content=chunk.content,
+            score=round(chunk.score, 4),
+        )
+        for chunk in chunks
+    ]
 
 
 @router.post("/{workspace_id}/documents/upload", response_model=DocumentResponse, status_code=status.HTTP_201_CREATED)

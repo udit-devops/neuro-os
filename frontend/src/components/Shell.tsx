@@ -1,10 +1,10 @@
 import React from 'react'
-import Sidebar from './Sidebar'
 import Topbar from './Topbar'
-import {Outlet, useLocation} from 'react-router-dom'
+import Sidebar from './Sidebar'
+import { Outlet, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export default function Shell(){
+export default function Shell() {
   const location = useLocation()
   return (
     <div className="app-shell">
@@ -15,12 +15,14 @@ export default function Shell(){
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.28 }}
+              transition={{ duration: 0.26, ease: 'easeOut' }}
             >
-              <Outlet />
+              <div className="container">
+                <Outlet />
+              </div>
             </motion.div>
           </AnimatePresence>
         </main>

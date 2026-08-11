@@ -14,3 +14,7 @@ class Workspace(Base):
 
     owner = relationship("User", back_populates="workspaces")
     documents = relationship("Document", back_populates="workspace", cascade="all, delete-orphan", passive_deletes=True)
+
+    @property
+    def document_count(self) -> int:
+        return len(self.documents)

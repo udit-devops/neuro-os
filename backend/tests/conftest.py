@@ -6,6 +6,7 @@ from app.db.database import SessionLocal
 from app.core.security import hash_password
 from app.models.users import User
 from app.models.workspace import Workspace
+from app.core.config import settings
 from tests.fakes import FakeEmbeddingProvider
 
 
@@ -18,16 +19,21 @@ def db():
 
 @pytest.fixture
 def owner(db):
-    email = f"test-{uuid.uuid4().hex}@example.com"
-    user = User(
-        email=email,
-        full_name="Test Owner",
-        is_active=True,
-        hashed_password=hash_password("correct horse battery staple"),
-    )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
+    if settings.AUTH_DISABLED:
+        email = "local@neuroos.local"
+    else:
+        email = f"test-{uuid.uuid4().hex}@example.com"
+    user = db.query(User).filter(User.email == email).first()
+    if user is None:
+        user = User(
+            email=email,
+            full_name="Test Owner",
+            is_active=True,
+            hashed_password=hash_password("correct horse battery staple"),
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
     yield user
     db.query(Workspace).filter(Workspace.owner_id == user.id).delete()
     db.delete(user)

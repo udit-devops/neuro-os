@@ -80,6 +80,7 @@ def test_upload_rejects_oversized(client, monkeypatch):
     assert response.status_code == 413
 
 
+@pytest.mark.skipif(settings.AUTH_DISABLED, reason="auth disabled in single-user mode")
 def test_upload_requires_auth(client):
     test_client, workspace, _ = client
     response = test_client.post(
@@ -110,6 +111,7 @@ def test_query_missing_keys_returns_503(client, monkeypatch):
     assert "not configured" in response.json()["detail"]
 
 
+@pytest.mark.skipif(settings.AUTH_DISABLED, reason="ownership checks disabled in single-user mode")
 def test_query_other_users_workspace_returns_404(client, db):
     test_client, workspace, owner = client
     from app.core.security import hash_password

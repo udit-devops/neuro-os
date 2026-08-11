@@ -24,6 +24,9 @@ class Settings:
             if origin.strip()
         ]
 
+        # Auth (True = single-user local mode, no login/signup required)
+        self.AUTH_DISABLED = os.getenv("AUTH_DISABLED") == "True"
+
         # Storage
         self.STORAGE_BACKEND = os.getenv("STORAGE_BACKEND", "local")
         self.STORAGE_LOCAL_ROOT = os.getenv("STORAGE_LOCAL_ROOT", "storage")

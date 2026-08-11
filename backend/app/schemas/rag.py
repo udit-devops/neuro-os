@@ -17,3 +17,11 @@ class RAGSource(BaseModel):
 class RAGQueryResponse(BaseModel):
     answer: str
     sources: list[RAGSource]
+
+
+class SearchResult(BaseModel):
+    document_id: int
+    title: str
+    chunk_index: int
+    content: str
+    score: float
