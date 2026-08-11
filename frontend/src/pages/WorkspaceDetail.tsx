@@ -5,8 +5,9 @@ import {listDocuments, uploadDocument, getDocument} from '../api/documents'
 import DocumentRow from '../components/DocumentRow'
 
 export default function WorkspaceDetail(){
-  const {"*": rest, workspaceId} = useParams() as any
-  const id = parseInt(useParams().workspaceId || '')
+  const params = useParams() as {workspaceId?: string}
+  const workspaceId = params.workspaceId
+  const id = workspaceId ? parseInt(workspaceId) : NaN
   const [workspace,setWorkspace] = useState<any>(null)
   const [docs,setDocs] = useState<any[]>([])
   const [file,setFile] = useState<File | null>(null)
@@ -24,9 +25,9 @@ export default function WorkspaceDetail(){
     if(!file || !id) return
     setUploadProgress(0)
     try{
-      const newDoc = await uploadDocument(id,file,undefined,(p)=>{
+      const newDoc = await uploadDocument(id,file,undefined,((p)=>{
         setUploadProgress(p)
-      } as any)
+      }) as any)
       setDocs(prev=>[newDoc,...prev])
       // start polling this document until completed/failed
       pollDocumentStatus(id, newDoc.id)
