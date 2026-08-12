@@ -30,7 +30,9 @@ export function AuthProvider({children}:{children:React.ReactNode}){
     setToken(token)
     if(token){
       // optionally fetch user
-      client.get('/users/me').then(r=>setUser(r.data)).catch(()=>{setUser(null)})
+      client.get('/users/me').then(r=>setUser(r.data)).catch(()=>{
+        logout()
+      })
     }else{
       setUser(null)
     }
