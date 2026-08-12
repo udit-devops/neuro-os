@@ -13,8 +13,10 @@ export default function Signup(){
     try{
       await client.post('/users/', {email, password, full_name: name})
       nav('/login')
-    }catch(err){
-      alert('Signup failed')
+    }catch(err:any){
+      const detail = err.response?.data?.detail
+      const msg = typeof detail === 'string' ? detail : Array.isArray(detail) ? detail.map((d:any)=>d.msg).join(', ') : err.message || 'Signup failed'
+      alert(`Signup failed: ${msg}`)
     }
   }
 

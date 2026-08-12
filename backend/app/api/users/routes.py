@@ -16,7 +16,7 @@ router = APIRouter(
 user_service = UserService()
 
 @router.post("/",response_model=UserResponse)
-@limiter.limit("3/minute")
+@limiter.limit("30/minute")
 def create_user(
     request: Request,
     user: UserCreate,
@@ -61,7 +61,7 @@ def delete_user(
     return user_service.delete_user(db,user_id)
 
 @router.post("/login",response_model=Token)
-@limiter.limit("10/minute")
+@limiter.limit("30/minute")
 def user_login(
   request: Request,
   form_data: OAuth2PasswordRequestForm = Depends(),

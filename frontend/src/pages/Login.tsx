@@ -15,8 +15,10 @@ export default function Login(){
     try{
       await auth.login(email,password)
       nav('/')
-    }catch(err){
-      alert('Login failed')
+    }catch(err:any){
+      const detail = err.response?.data?.detail
+      const msg = typeof detail === 'string' ? detail : Array.isArray(detail) ? detail.map((d:any)=>d.msg).join(', ') : err.message || 'Login failed'
+      alert(`Login failed: ${msg}`)
     }finally{setLoading(false)}
   }
 
