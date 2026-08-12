@@ -36,6 +36,6 @@ export async function searchWorkspace(
 }
 
 export async function listWorkspacesForPicker(): Promise<Workspace[]> {
-  const res = await client.get('/workspaces')
+  const res = await client.get('/workspaces/')
   return res.data
 }
