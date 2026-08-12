@@ -11,7 +11,7 @@ export default function Signup(){
   async function submit(e:React.FormEvent){
     e.preventDefault()
     try{
-      await client.post('/users', {email, password, full_name: name})
+      await client.post('/users/', {email, password, full_name: name})
       nav('/login')
     }catch(err){
       alert('Signup failed')
