@@ -37,10 +37,12 @@ export function AuthProvider({children}:{children:React.ReactNode}){
   },[token])
 
   async function login(email:string,password:string){
-    const form = new FormData()
-    form.append('username',email)
-    form.append('password',password)
-    const res = await client.post('/users/login', form)
+    const params = new URLSearchParams()
+    params.append('username',email)
+    params.append('password',password)
+    const res = await client.post('/users/login', params, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
     const data = res.data
     setTok(data.access_token)
     localStorage.setItem('token',data.access_token)
