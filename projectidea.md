@@ -845,7 +845,7 @@ Phase 4 — Ingestion + RAG Foundation
 STATUS: COMPLETE
 
 Phase 5 — Frontend
-STATUS: FUTURE
+STATUS: COMPLETE
 
 Phase 6 — Conversations + Memory
 STATUS: FUTURE
