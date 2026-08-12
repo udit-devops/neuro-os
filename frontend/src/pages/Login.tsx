@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, Link} from 'react-router-dom'
 import {useAuth} from '../auth/AuthProvider'
 
 export default function Login(){
@@ -30,7 +30,7 @@ export default function Login(){
         <input className="ui-input" type="password" value={password} onChange={e=>setPassword(e.target.value)} aria-label="password" />
         <div style={{display:'flex',gap:12,alignItems:'center'}}>
           <button className="btn btn-primary" disabled={loading} type="submit">Sign in</button>
-          <a href="/signup" style={{color:'var(--muted)',textDecoration:'none'}}>Create account</a>
+          <Link to="/signup" style={{color:'var(--muted)',textDecoration:'none'}}>Create account</Link>
         </div>
       </form>
     </div>
