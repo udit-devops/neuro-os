@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 import Shell from '../components/Shell'
 import Login from '../pages/Login'
 import Signup from '../pages/Signup'
@@ -10,6 +10,13 @@ import Chat from '../pages/Chat'
 import Documents from '../pages/Documents'
 import Search from '../pages/Search'
 import Settings from '../pages/Settings'
+import {useAuth} from '../auth/AuthProvider'
+
+function Protected({children}:{children:React.ReactNode}){
+  const {token} = useAuth()
+  if(!token) return <Navigate to="/login" replace />
+  return <>{children}</>
+}
 
 export default function AppRoutes(){
   return (
@@ -17,7 +24,7 @@ export default function AppRoutes(){
       <Routes>
         <Route path="/login" element={<Login/>} />
         <Route path="/signup" element={<Signup/>} />
-        <Route path="/" element={<Shell /> }>
+        <Route path="/" element={<Protected><Shell /></Protected>}>
           <Route index element={<Dashboard/>} />
           <Route path="workspaces" element={<Workspaces/>} />
           <Route path="workspaces/:workspaceId" element={<WorkspaceDetail/>} />
